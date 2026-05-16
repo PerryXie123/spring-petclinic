@@ -17,7 +17,6 @@ package org.springframework.samples.petclinic.owner;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
