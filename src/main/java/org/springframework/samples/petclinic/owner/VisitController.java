@@ -62,9 +62,9 @@ class VisitController {
 	@ModelAttribute("visit")
 	public Visit loadPetWithVisit(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId,
 			Map<String, Object> model) {
-		Optional<Owner> optionalOwner = owners.findById(ownerId);
-		Owner owner = optionalOwner.orElseThrow(() -> new IllegalArgumentException(
-				"Owner not found with id: " + ownerId + ". Please ensure the ID is correct "));
+    Owner owner = this.owners.findById(ownerId)
+        .orElseThrow(() -> new IllegalArgumentException(
+            "Owner not found with id: " + ownerId + ". Please ensure the ID is correct "));
 
 		Pet pet = owner.getPet(petId);
 		if (pet == null) {
