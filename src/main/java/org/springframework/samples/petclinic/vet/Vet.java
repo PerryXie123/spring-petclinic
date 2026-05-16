@@ -34,6 +34,10 @@ import jakarta.xml.bind.annotation.XmlElement;
 
 /**
  * Simple JavaBean domain object representing a veterinarian.
+ * This entity class inherits basic identity and naming properties from {@link Person} 
+ * and introduces a many-to-many relationship mapping for a veterinarian's {@link Specialty}.
+ * It safely manages its internal set of specialties and exposes a sorted, 
+ * unmodifiable list for external retrieval, ensuring state consistency.
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
@@ -49,6 +53,12 @@ public class Vet extends Person {
 			inverseJoinColumns = @JoinColumn(name = "specialty_id"))
 	private Set<Specialty> specialties;
 
+	/**
+	 * Provides access to the internal set of specialties.
+	 * Initializes the set if it is currently null to avoid NullPointerExceptions.
+	 *
+	 * @return the internal mutable set of {@link Specialty}
+	 */
 	protected Set<Specialty> getSpecialtiesInternal() {
 		if (this.specialties == null) {
 			this.specialties = new HashSet<>();
@@ -56,6 +66,12 @@ public class Vet extends Person {
 		return this.specialties;
 	}
 
+	/**
+	 * Retrieves the list of specialties sorted by their name.
+	 * This method relies on the internal set while exposing a structured list.
+	 *
+	 * @return a sorted {@link List} of {@link Specialty} objects assigned to this vet
+	 */
 	@XmlElement
 	public List<Specialty> getSpecialties() {
 		return getSpecialtiesInternal().stream()
@@ -63,10 +79,20 @@ public class Vet extends Person {
 			.collect(Collectors.toList());
 	}
 
+	/**
+	 * Returns the total number of specialties this veterinarian possesses.
+	 *
+	 * @return the count of specialties
+	 */
 	public int getNrOfSpecialties() {
 		return getSpecialtiesInternal().size();
 	}
 
+	/**
+	 * Adds a new specialty to this veterinarian's set of specialties.
+	 *
+	 * @param specialty the {@link Specialty} to add
+	 */
 	public void addSpecialty(Specialty specialty) {
 		getSpecialtiesInternal().add(specialty);
 	}
