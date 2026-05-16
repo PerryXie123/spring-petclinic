@@ -36,6 +36,12 @@ import jakarta.validation.constraints.NotBlank;
 
 /**
  * Simple JavaBean domain object representing an owner.
+ * This class serves as the core entity in the PetClinic application for modeling the 
+ * business rules regarding clients (owners) and managing their associated pets.
+ *
+ * It extends {@link Person} to inherit basic properties like first and last name, 
+ * and adds additional owner-specific details along with relationship cascade logic 
+ * to handle their pets.
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
@@ -66,34 +72,68 @@ public class Owner extends Person {
 	@OrderBy("name")
 	private final List<Pet> pets = new ArrayList<>();
 
+	/**
+	 * Retrieves the address of the owner.
+	 * @return the residential street address
+	 */
 	public String getAddress() {
 		return this.address;
 	}
 
+	/**
+	 * Sets the address of the owner.
+	 * @param address the residential street address to set
+	 */
 	public void setAddress(String address) {
 		this.address = address;
 	}
 
+	/**
+	 * Retrieves the city of the owner.
+	 * @return the city
+	 */
 	public String getCity() {
 		return this.city;
 	}
 
+	/**
+	 * Sets the city of the owner.
+	 * @param city the city to set
+	 */
 	public void setCity(String city) {
 		this.city = city;
 	}
 
+	/**
+	 * Retrieves the telephone number of the owner.
+	 * @return the telephone number
+	 */
 	public String getTelephone() {
 		return this.telephone;
 	}
 
+	/**
+	 * Sets the telephone number of the owner.
+	 * @param telephone the 10-digit telephone number
+	 */
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
 
+	/**
+	 * Retrieves the list of pets owned by this owner.
+	 * @return a list of associated {@link Pet} objects
+	 */
 	public List<Pet> getPets() {
 		return this.pets;
 	}
 
+	/**
+	 * Associates a new pet with this owner.
+	 * Will only add the pet if it is marked as new (i.e. has no assigned ID yet).
+	 *
+	 * @param pet the {@link Pet} to add
+	 */
 	public void addPet(Pet pet) {
 		if (pet.isNew()) {
 			getPets().add(pet);
